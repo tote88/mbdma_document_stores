@@ -57,7 +57,7 @@ public class Part_C_model_1 {
 				personDocument.put("age", person.getAge());
 				personDocument.put("nationalIdentityCardNumber", person.getNationalIdentityCardNumber());
 				personDocument.put("nationalIdentificationNumber", person.getNationalIdentificationNumber());
-				personDocument.put("companyEmail", person.getFirstName()+"."+person.getLastName()+"@"+company.getDomain());
+				personDocument.put("companyEmail", person.getFirstName().toLowerCase()+"."+person.getLastName().toLowerCase()+"@"+company.getDomain());
 				personDocument.put("companyId", id);
 
 				personCollection.insertOne(personDocument);
