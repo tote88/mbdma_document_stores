@@ -1,6 +1,7 @@
 package part_c;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.codearte.jfairy.Fairy;
@@ -18,6 +19,9 @@ public class Part_C_model_1 {
 		MongoDatabase database = client.getDatabase("model1");
 		MongoCollection<Document> personCollection = database.getCollection("person");
 		MongoCollection<Document> companyCollection = database.getCollection("company");
+
+		personCollection.drop();
+		companyCollection.drop();
 
 		for (int i = 0; i < N; ++i) {
 			// COMPANY:
@@ -53,9 +57,8 @@ public class Part_C_model_1 {
 				personDocument.put("age", person.getAge());
 				personDocument.put("nationalIdentityCardNumber", person.getNationalIdentityCardNumber());
 				personDocument.put("nationalIdentificationNumber", person.getNationalIdentificationNumber());
+				personDocument.put("companyEmail", person.getFirstName()+"."+person.getLastName()+"@"+company.getDomain());
 				personDocument.put("companyId", id);
-
-				System.out.println(personDocument.toJson());
 
 				personCollection.insertOne(personDocument);
 			}
@@ -73,6 +76,14 @@ public class Part_C_model_1 {
 
 		System.out.println("First inserted person [ " + queryTime + " ms]: " + queryResult);
 		*/
+		/* QUERY 1 */
+        long startTime = System.currentTimeMillis(); // Get time at the start of the query
+        FindIterable<Document> results = personCollection.find();
+        for (Document doc : results) {
+            System.out.println(doc.getString("firstName") + " " + doc.getString("middleName") + " " + doc.getString("lastName"));
+        }
+        long queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
+        System.out.println("\nTIME USED FOR QUERY 1: " + queryTime);
 		client.close();
 	}
 }

@@ -48,6 +48,7 @@ public class Part_C_model_2 {
 				personDocument.put("age", person.getAge());
 				personDocument.put("nationalIdentityCardNumber", person.getNationalIdentityCardNumber());
 				personDocument.put("nationalIdentificationNumber", person.getNationalIdentificationNumber());
+				personDocument.put("companyEmail", person.getFirstName()+"."+person.getLastName()+"@"+company.getDomain());
 				personDocument.put("company", companyDocument);
 
 				System.out.println(personDocument.toJson());
