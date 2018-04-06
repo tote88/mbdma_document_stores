@@ -80,7 +80,12 @@ public class Part_C_model_1 {
         long startTime = System.currentTimeMillis(); // Get time at the start of the query
         FindIterable<Document> results = personCollection.find();
         for (Document doc : results) {
-            System.out.println(doc.getString("firstName") + " " + doc.getString("middleName") + " " + doc.getString("lastName"));
+			ObjectId companyId = doc.getObjectId("companyId");
+			Document query = new Document();
+			query.put("_id", companyId);
+			Document company = companyCollection.find(query).first();
+
+			System.out.println(doc.getString("firstName") + " " + doc.getString("middleName") + " " + doc.getString("lastName") + " works at " + company.get("name"));
         }
         long queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
         System.out.println("\nTIME USED FOR QUERY 1: " + queryTime);
