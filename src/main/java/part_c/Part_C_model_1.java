@@ -9,6 +9,11 @@ import io.codearte.jfairy.producer.company.Company;
 import io.codearte.jfairy.producer.person.Person;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Part_C_model_1 {
 
@@ -85,10 +90,70 @@ public class Part_C_model_1 {
 			query.put("_id", companyId);
 			Document company = companyCollection.find(query).first();
 
-			System.out.println(doc.getString("firstName") + " " + doc.getString("middleName") + " " + doc.getString("lastName") + " works at " + company.get("name"));
+			//System.out.println(doc.getString("firstName") + " " + doc.getString("middleName") + " " + doc.getString("lastName") + " works at " + company.get("name"));
         }
         long queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
         System.out.println("\nTIME USED FOR QUERY 1: " + queryTime);
+
+		/* QUERY 2 */
+		startTime = System.currentTimeMillis(); // Get time at the start of the query
+		results = companyCollection.find();
+		for (Document doc : results) {
+			ObjectId companyId = doc.getObjectId("_id");
+			Document query = new Document();
+			query.put("companyId", companyId);
+
+			Long nPeople = personCollection.count(query);
+
+			//System.out.println("At " + doc.get("name") + " work " + nPeople.toString() + " employees");
+		}
+		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
+		System.out.println("\nTIME USED FOR QUERY 2: " + queryTime);
+
+		/* QUERY 3 */
+		startTime = System.currentTimeMillis(); // Get time at the start of the query
+
+		Document update = new Document();
+		Document ageDoc = new Document();
+		ageDoc.put("age", 30);
+		update.put("$set", ageDoc);
+
+		Document query = new Document();
+		Document lessThan1988 = new Document();
+		lessThan1988.put("$lt", "1988-01-01");
+		query.put("dateOfBirth", lessThan1988);
+		personCollection.updateMany(query, update);
+
+
+		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
+		System.out.println("\nTIME USED FOR QUERY 3: " + queryTime);
+
+		/*FindIterable<Document> resultsAfter = personCollection.find();
+		for (Document doc : resultsAfter) {
+			System.out.println(doc.get("firstName") + " is " + doc.get("age") + " and is born in " + doc.get("dateOfBirth"));
+		}*/
+
+		/* QUERY 4 */
+		startTime = System.currentTimeMillis(); // Get time at the start of the query
+
+		results = companyCollection.find();
+		for (Document doc : results) {
+			ObjectId companyId = doc.getObjectId("_id");
+			String companyName = doc.get("name").toString().concat(" Company");
+
+			companyCollection.updateOne(
+					new Document("_id", companyId),
+					new Document("$set", new Document("name", companyName)));
+		}
+
+		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
+		System.out.println("\nTIME USED FOR QUERY 4: " + queryTime);
+
+		/*resultsAfter = companyCollection.find();
+		for (Document doc : resultsAfter) {
+			System.out.println(doc.get("name"));
+		}*/
+
 		client.close();
 	}
 }
