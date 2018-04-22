@@ -89,10 +89,27 @@ public class Part_C_model_2 {
 			}
 			numberOfEmployees.put(companyName, currentNumber);
 		}
-		for (Map.Entry<String, Integer> company : numberOfEmployees.entrySet()) {
+		/*for (Map.Entry<String, Integer> company : numberOfEmployees.entrySet()) {
 			System.out.println("At " + company.getKey() + " work " + company.getValue() + " people.");
-		}
+		}*/
 		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
 		System.out.println("\nTIME USED FOR QUERY 2: " + queryTime);
+
+		/* QUERY 3 For each person born before 1988, update age to 30*/
+		startTime = System.currentTimeMillis(); // Get time at the start of the query
+
+		Document update = new Document();
+		Document ageDoc = new Document();
+		ageDoc.put("age", 30);
+		update.put("$set", ageDoc);
+
+		Document query = new Document();
+		Document lessThan1988 = new Document();
+		lessThan1988.put("$lt", "1988-01-01");
+		query.put("dateOfBirth", lessThan1988);
+		personCollection.updateMany(query, update);
+
+		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
+		System.out.println("\nTIME USED FOR QUERY 3: " + queryTime);
 	}
 }
