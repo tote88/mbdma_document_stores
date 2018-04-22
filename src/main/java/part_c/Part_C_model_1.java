@@ -128,11 +128,6 @@ public class Part_C_model_1 {
 		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
 		System.out.println("\nTIME USED FOR QUERY 3: " + queryTime);
 
-		/*FindIterable<Document> resultsAfter = personCollection.find();
-		for (Document doc : resultsAfter) {
-			System.out.println(doc.get("firstName") + " is " + doc.get("age") + " and is born in " + doc.get("dateOfBirth"));
-		}*/
-
 		/* QUERY 4 */
 		startTime = System.currentTimeMillis(); // Get time at the start of the query
 
