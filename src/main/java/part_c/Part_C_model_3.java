@@ -70,8 +70,8 @@ public class Part_C_model_3 {
 
 			
 			for (Document person : persons) {
-//				System.out.println(person.getString("firstName") + " " + person.getString("middleName") + " " +
-//					person.getString("lastName") + " works at " + company.get("name"));
+				System.out.println(person.getString("firstName") + " " + person.getString("middleName") + " " +
+					person.getString("lastName") + " works at " + company.get("name"));
 			}
 		}
 		long queryTime1 = System.currentTimeMillis() - startTime; // Measure query execution time
@@ -82,7 +82,7 @@ public class Part_C_model_3 {
 		for (Document company : results) {
 			ArrayList<Document> persons = (ArrayList) company.get("persons");
 
-//			System.out.println("At " + company.get("name") + " work " + persons.size() + " people.");
+			System.out.println("At " + company.get("name") + " work " + persons.size() + " people.");
 		}
 		long queryTime2 = System.currentTimeMillis() - startTime; // Measure query execution time
 		
