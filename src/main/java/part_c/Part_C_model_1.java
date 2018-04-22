@@ -71,17 +71,7 @@ public class Part_C_model_1 {
 
 		}
 
-		/*
-		Document query = new Document();
-		query.put("firstName", oneName);
-
-		long startTime = System.currentTimeMillis(); // Get time at the start of the query
-		String queryResult = collection.find(query).first().toJson();
-		long queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
-
-		System.out.println("First inserted person [ " + queryTime + " ms]: " + queryResult);
-		*/
-		/* QUERY 1 */
+		/* QUERY 1: For each person, its full name and company */
         long startTime = System.currentTimeMillis(); // Get time at the start of the query
         FindIterable<Document> results = personCollection.find();
         for (Document doc : results) {
@@ -90,12 +80,13 @@ public class Part_C_model_1 {
 			query.put("_id", companyId);
 			Document company = companyCollection.find(query).first();
 
-			//System.out.println(doc.getString("firstName") + " " + doc.getString("middleName") + " " + doc.getString("lastName") + " works at " + company.get("name"));
+			System.out.println(doc.getString("firstName") + " " + doc.getString("middleName") + " " +
+					doc.getString("lastName") + " works at " + company.get("name"));
         }
-        long queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
-        System.out.println("\nTIME USED FOR QUERY 1: " + queryTime);
+        long queryTime1 = System.currentTimeMillis() - startTime; // Measure query execution time
 
-		/* QUERY 2 */
+
+		/* QUERY 2: For each company, name and number of employees*/
 		startTime = System.currentTimeMillis(); // Get time at the start of the query
 		results = companyCollection.find();
 		for (Document doc : results) {
@@ -105,12 +96,11 @@ public class Part_C_model_1 {
 
 			Long nPeople = personCollection.count(query);
 
-			//System.out.println("At " + doc.get("name") + " work " + nPeople.toString() + " employees");
+			System.out.println("At " + doc.get("name") + " work " + nPeople.toString() + " employees");
 		}
-		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
-		System.out.println("\nTIME USED FOR QUERY 2: " + queryTime);
+		long queryTime2 = System.currentTimeMillis() - startTime; // Measure query execution time
 
-		/* QUERY 3 */
+		/* QUERY 3 For each person born before 1988, update age to 30*/
 		startTime = System.currentTimeMillis(); // Get time at the start of the query
 
 		Document update = new Document();
@@ -125,10 +115,9 @@ public class Part_C_model_1 {
 		personCollection.updateMany(query, update);
 
 
-		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
-		System.out.println("\nTIME USED FOR QUERY 3: " + queryTime);
+		long queryTime3 = System.currentTimeMillis() - startTime; // Measure query execution time
 
-		/* QUERY 4 */
+		/* QUERY 4 update company name to include Company word*/
 		startTime = System.currentTimeMillis(); // Get time at the start of the query
 
 		results = companyCollection.find();
@@ -141,8 +130,7 @@ public class Part_C_model_1 {
 					new Document("$set", new Document("name", companyName)));
 		}
 
-		queryTime = System.currentTimeMillis() - startTime; // Measure query execution time
-		System.out.println("\nTIME USED FOR QUERY 4: " + queryTime);
+		long queryTime4 = System.currentTimeMillis() - startTime; // Measure query execution time
 
 		/*resultsAfter = companyCollection.find();
 		for (Document doc : resultsAfter) {
@@ -150,5 +138,9 @@ public class Part_C_model_1 {
 		}*/
 
 		client.close();
+		System.out.println("\nTIME USED FOR QUERY 1: " + queryTime1);
+		System.out.println("\nTIME USED FOR QUERY 2: " + queryTime2);
+		System.out.println("\nTIME USED FOR QUERY 3: " + queryTime3);
+		System.out.println("\nTIME USED FOR QUERY 4: " + queryTime4);
 	}
 }
